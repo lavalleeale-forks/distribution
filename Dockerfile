@@ -54,6 +54,8 @@ FROM alpine:${ALPINE_VERSION}
 RUN apk add --no-cache ca-certificates
 COPY cmd/registry/config-dev.yml /etc/docker/registry/config.yml
 COPY --from=binary /registry /bin/registry
+ADD root_ca.crt /usr/local/share/ca-certificates/registry.crt
+RUN chmod 644 /usr/local/share/ca-certificates/registry.crt && update-ca-certificates
 VOLUME ["/var/lib/registry"]
 EXPOSE 5000
 ENTRYPOINT ["registry"]
